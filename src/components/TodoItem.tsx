@@ -30,7 +30,7 @@ export default function TodoItem({
         />
         <label
           htmlFor={id}
-          className="peer-checked:line-through peer-checked:text-slate-500 cursor-pointer"
+          className="peer-checked:line-through peer-checked:text-slate-300 cursor-pointer"
         >
           {title}
         </label>
