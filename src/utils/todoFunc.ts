@@ -28,6 +28,7 @@ export const createTodo = async (data: FormData) => {
   }
 
   await prisma.todo.create({ data: { title, complete: false } });
+
   redirect("/");
 };
 
