@@ -1,3 +1,32 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+.mantine-PinInput-input {
+  border: none;
+  border-bottom: 1px solid #000;
+  border-radius: 0;
+}
+
+.mantine-TextInput-input,
+.mantine-TextInput-error,
+.mantine-PasswordInput-innerInput,
+.mantine-PasswordInput-error,
+.mantine-DateInput-input,
+.mantine-DateInput-error,
+.mantine-Select-input,
+.mantine-Select-error,
+.mantine-MultiSelect-input,
+.mantine-MultiSelect-error,
+.mantine-Textarea-input,
+.mantine-Textarea-error,
+.mantine-NumberInput-input,
+.mantine-NumberInput-error,
+.mantine-RichTextEditor-input,
+.mantine-RichTextEditor-content {
+  font-size: 12px !important;
+
+  &::placeholder {
+    font-size: 12px !important;
+  }
+}

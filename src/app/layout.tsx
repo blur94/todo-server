@@ -5,6 +5,7 @@ import "@mantine/notifications/styles.css";
 import "./globals.css";
 import { MantineProvider } from "@mantine/core";
 import { Notifications } from "@mantine/notifications";
+import AppProvider from "@/components/AppProvider";
 
 const inter = Inter({ subsets: ["latin"] });
 
