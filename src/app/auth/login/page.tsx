@@ -23,6 +23,7 @@ import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { z } from "zod";
 import { signIn } from "next-auth/react";
+import Link from "next/link";
 
 export default function Register() {
   const { handleError, handleInfo, handleSuccess } = useNotification();
@@ -132,6 +133,19 @@ export default function Register() {
             Submit
           </Button>
         </Flex>
+
+        <Text fz={12} mt={20}>
+          Not a member yet?{" "}
+          <Text
+            inherit
+            component={Link}
+            variant="gradient"
+            gradient={{ from: "yellow", to: "pink" }}
+            href={"/auth/register"}
+          >
+            Register
+          </Text>
+        </Text>
       </Card>
     </Center>
   );

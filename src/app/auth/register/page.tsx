@@ -19,6 +19,7 @@ import {
 } from "@mantine/core";
 import { useForm, zodResolver } from "@mantine/form";
 import axios from "axios";
+import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { z } from "zod";
@@ -154,6 +155,19 @@ export default function Register() {
             Submit
           </Button>
         </Flex>
+
+        <Text fz={12} mt={20}>
+          Already a member?{" "}
+          <Text
+            inherit
+            component={Link}
+            variant="gradient"
+            gradient={{ from: "yellow", to: "pink" }}
+            href={"/auth/login"}
+          >
+            Log In
+          </Text>
+        </Text>
       </Card>
     </Center>
   );
