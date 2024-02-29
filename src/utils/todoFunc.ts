@@ -1,11 +1,20 @@
 "use server";
 import { prisma } from "@/db";
+import axios from "axios";
+import { getServerSession } from "next-auth";
+import { getToken } from "next-auth/jwt";
 
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
+import { type NextRequest } from "next/server";
+import { authOptions } from "./authOptions";
 
 export const getTodos = async () => {
-  return prisma.todo.findMany();
+  const session = await getServerSession(authOptions);
+
+  const userId = session?.user.id;
+
+  if (userId) return prisma.todo.findMany({ where: { userId: userId } });
 };
 
 export const toggleTodo = async (id: string, complete: boolean) => {
@@ -19,6 +28,9 @@ export const deleteTodo = async (id: string) => {
 };
 
 export const createTodo = async (data: FormData) => {
+  const session = await getServerSession(authOptions);
+
+  const userId = session?.user.id;
   const title = data.get("title")?.valueOf();
 
   if (typeof title !== "string" || title.length < 1) {
@@ -27,7 +39,10 @@ export const createTodo = async (data: FormData) => {
     return;
   }
 
-  await prisma.todo.create({ data: { title, complete: false } });
+  if (userId)
+    await prisma.todo.create({
+      data: { title, complete: false, userId: userId },
+    });
 
   redirect("/");
 };
