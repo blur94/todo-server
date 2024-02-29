@@ -22,6 +22,7 @@ import axios from "axios";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { z } from "zod";
+import { signIn } from "next-auth/react";
 
 export default function Register() {
   const { handleError, handleInfo, handleSuccess } = useNotification();
@@ -29,27 +30,35 @@ export default function Register() {
 
   const [visible, setVisible] = useState(false);
 
-  const form = useForm<z.infer<typeof RegisterSchema>>({
-    initialValues: RegisterValues,
-    validate: zodResolver(RegisterSchema),
+  const schema = z.object({
+    emailOrUserName: z.string().min(1, "Email or User Name is required"),
+    password: z.string().min(1, "Password is required"),
+  });
+
+  const form = useForm<z.infer<typeof schema>>({
+    initialValues: { emailOrUserName: "", password: "" },
+    validate: zodResolver(schema),
   });
   const createUser = async (data: FormData) => {
     const { hasErrors } = form.validate();
     if (hasErrors) return;
-    const { fullName, email, userName, password, confirmPassword } =
-      form.values;
+    const { emailOrUserName, password } = form.values;
 
     try {
       setVisible(true);
-      const { data: res } = await axios.post("/api/register", {
-        fullName,
-        email,
-        userName,
-        password,
-        confirmPassword,
+
+      const user = await signIn("credentials", {
+        emailOrUserName: emailOrUserName,
+        password: password,
+        redirect: false,
       });
 
-      handleSuccess("Registration successful", res.message);
+      if (user?.error && !user.ok)
+        return handleError("Login Failed", "Incorrect details");
+
+      handleSuccess("Login Successful", "Welcome back");
+
+      // handleSuccess("Registration successful", res.message);
       push("/");
     } catch (error) {
       if (axios.isAxiosError(error)) {
@@ -75,7 +84,7 @@ export default function Register() {
       />
       <Card w={500} shadow="md" p="xl" component="form" action={createUser}>
         <Title order={2} mb={20}>
-          Register to{" "}
+          Log In to{" "}
           <Text
             inherit
             variant="gradient"
@@ -88,56 +97,25 @@ export default function Register() {
 
         <Box w="100%">
           <TextInput
-            name="fullName"
-            label={label("Full Name")}
-            placeholder="Enter Full Name"
+            name="emailOrUserName"
+            label={label("Email / User Name")}
+            placeholder="Enter Email / User Name"
             mb="md"
             size="md"
-            {...form.getInputProps("fullName")}
+            {...form.getInputProps("emailOrUserName")}
           />
         </Box>
+
         <Box w="100%">
-          <TextInput
-            name="userName"
-            label={label("Username")}
-            placeholder="Enter Username"
+          <PasswordInput
+            name="password"
+            label={label("Password")}
+            placeholder="Enter Password"
             mb="md"
             size="md"
-            {...form.getInputProps("userName")}
+            {...form.getInputProps("password")}
           />
         </Box>
-        <Box w="100%">
-          <TextInput
-            name="email"
-            label={label("Email")}
-            placeholder="Enter Email"
-            mb="md"
-            size="md"
-            {...form.getInputProps("email")}
-          />
-        </Box>
-        <Flex gap={20}>
-          <Box w="100%">
-            <PasswordInput
-              name="password"
-              label={label("Password")}
-              placeholder="Enter Password"
-              mb="md"
-              size="md"
-              {...form.getInputProps("password")}
-            />
-          </Box>
-          <Box w="100%">
-            <PasswordInput
-              name="confirmPassword"
-              label={label("Confirm Password")}
-              placeholder="Confirm Password"
-              mb="md"
-              size="md"
-              {...form.getInputProps("confirmPassword")}
-            />
-          </Box>
-        </Flex>
 
         <Flex gap={20} justify="space-between" mt={30}>
           <Button variant="outline" w={200} color="yellow">
