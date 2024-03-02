@@ -1,5 +1,11 @@
 import { createTodo } from "@/utils/todoFunc";
+import { Metadata } from "next";
 import Link from "next/link";
+
+export const metadata: Metadata = {
+  title: "Create",
+  description: "Create a new todo",
+};
 
 export default function New() {
   return (

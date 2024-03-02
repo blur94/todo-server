@@ -1,5 +1,11 @@
 import Link from "next/link";
 import { getTodo, handleEditTodo } from "@/utils/todoFunc";
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Edit",
+  description: "Edit a todo",
+};
 
 type Props = {
   params: { id: string };
