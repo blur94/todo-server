@@ -2,6 +2,9 @@ import { createTodo } from "@/utils/todoFunc";
 import { Metadata } from "next";
 import Link from "next/link";
 
+import { DateInput } from "@mantine/dates";
+import { label } from "@/utils/label";
+
 export const metadata: Metadata = {
   title: "Create",
   description: "Create a new todo",
@@ -16,7 +19,9 @@ export default function New() {
 
       <form action={createTodo}>
         <div className="flex flex-col gap-3 mb-6">
-          <label htmlFor="title">Title</label>
+          <label htmlFor="title" className="text-[12px] font-medium">
+            Title
+          </label>
           <input
             type="text"
             name="title"
@@ -24,6 +29,15 @@ export default function New() {
             className="border-2 outline-none rounded-md py-1 px-3 placeholder:text-slate-900 text-slate-600"
           />
         </div>
+
+        <DateInput
+          // defaultValue={new Date()}
+          name="deadline"
+          label={label("Deadline")}
+          placeholder="Choose deadline"
+          minDate={new Date()}
+          mb="md"
+        />
 
         <div className="flex items-center justify-end gap-5">
           <Link
