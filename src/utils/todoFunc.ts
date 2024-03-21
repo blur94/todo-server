@@ -32,6 +32,8 @@ export const createTodo = async (data: FormData) => {
 
   const userId = session?.user.id;
   const title = data.get("title")?.valueOf();
+  const deadline = data.get("deadline")?.valueOf();
+  console.log(deadline);
 
   if (typeof title !== "string" || title.length < 1) {
     throw new Error("Title is required");
