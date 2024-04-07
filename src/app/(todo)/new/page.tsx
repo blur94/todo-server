@@ -31,7 +31,6 @@ export default function New() {
         </div>
 
         <DateInput
-          // defaultValue={new Date()}
           name="deadline"
           label={label("Deadline")}
           placeholder="Choose deadline"
